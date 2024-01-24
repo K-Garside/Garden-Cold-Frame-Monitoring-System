@@ -57,7 +57,7 @@ class Reading {
 
     bool checkDelete()
     {
-      if(timeDiff(this->readingTime, DELETION_DELAY))
+      if(timeDiff(this->readingTime, DELETION_DELAY))//TODO change this, it wont delete after 24 hrs, it will delete right after being made
       {
         return true;
       }
