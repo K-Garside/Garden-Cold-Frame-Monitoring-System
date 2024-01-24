@@ -3,6 +3,7 @@
 #include <time.h>
 #include <iostream>
 #include <vector>
+#include <LiquidCrystal.h>
 
 #define DHTPIN 4   
 #define greenLED 21
@@ -11,6 +12,7 @@
 #define DHTTYPE DHT11
 
 DHT dht(DHTPIN, DHTTYPE);
+LiquidCrystal LCD(13, 12, 14, 27, 26, 25);
 
 // Assign my epochs and there last changes
 
@@ -203,6 +205,18 @@ void printDHT()
   Serial.println(frame.getTemp());
   Serial.print("Current Hum: ");
   Serial.println(frame.getHum());
+
+  LCD.clear();
+
+  LCD.setCursor(0, 0);
+
+  LCD.print("Temp: " );
+  LCD.print(frame.getTemp());
+
+  LCD.setCursor(0, 1);
+
+  LCD.print("Humi: ");
+  LCD.print(frame.getHum());
 }
 
 void setup() 
@@ -214,6 +228,9 @@ void setup()
   pinMode(redLED, OUTPUT);
   assignOperatingModeVals();
   frame.setOperatingMode(Vegetative);
+
+  LCD.begin(16, 2);
+
   dht.begin();
 
   float h = dht.readHumidity();
@@ -222,7 +239,22 @@ void setup()
   
   if (isnan(h) || isnan(t) || isnan(f)) {
     Serial.println(F("Failed to read from DHT sensor"));
+    LCD.print("DHT failed");
     return;
+  }
+  else
+  {
+    LCD.clear();
+
+    LCD.setCursor(0, 0);
+
+    LCD.print("Temp: " );
+    LCD.print(t);
+
+    LCD.setCursor(0, 1);
+
+    LCD.print("Humi: ");
+    LCD.print(h);
   }
 }
 
