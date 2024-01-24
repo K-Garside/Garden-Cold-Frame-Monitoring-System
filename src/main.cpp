@@ -236,27 +236,35 @@ void setup()
   float h = dht.readHumidity();
   float t = dht.readTemperature();
   float f = dht.readTemperature(true);
-  
-  if (isnan(h) || isnan(t) || isnan(f)) {
-    Serial.println(F("Failed to read from DHT sensor"));
-    LCD.print("DHT failed");
-    return;
-  }
-  else
+
+  while(isnan(h) || isnan(t) || isnan(f))
   {
-    LCD.clear();
+      h = dht.readHumidity();
+      t = dht.readTemperature();
+      f = dht.readTemperature(true);
 
-    LCD.setCursor(0, 0);
-
-    LCD.print("Temp: " );
-    LCD.print(t);
-
-    LCD.setCursor(0, 1);
-
-    LCD.print("Humi: ");
-    LCD.print(h);
-  }
+      if (isnan(h) || isnan(t) || isnan(f)) {
+        Serial.println(F("Failed to read from DHT sensor"));
+        LCD.print("DHT failed");
+      }
+      else
+      {
+        LCD.clear();
+    
+        LCD.setCursor(0, 0);
+    
+        LCD.print("Temp: " );
+        LCD.print(t);
+    
+        LCD.setCursor(0, 1);
+    
+        LCD.print("Humi: ");
+        LCD.print(h);
+      }
+    }
 }
+  
+
 
 void loop()
 {
